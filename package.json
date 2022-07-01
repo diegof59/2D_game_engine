@@ -1,0 +1,23 @@
+{
+  "name": "2d_game_engine_server",
+  "version": "1.0.0",
+  "description": "Simple server to 2d_game_engine",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diegof95/2D_game_engine.git"
+  },
+  "author": "diegof95",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/diegof95/2D_game_engine/issues"
+  },
+  "homepage": "https://github.com/diegof95/2D_game_engine#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}

@@ -9,7 +9,8 @@ function MyGame(htmlCanvasID){
   globEngine.Core.initWebGL(htmlCanvasID);
 
   // Create, load and compile the vertex and fragment shaders
-  this.mShader = new SimpleShader("VertexShader", "FragmentShader");
+  // Shader path is relative to server root
+  this.mShader = new SimpleShader("src/GLSLShaders/SimpleVS.glsl", "src/GLSLShaders/WhiteFS.glsl");
 
   // Clear canvas to a  color
   globEngine.Core.clearCanvas([0.09, 0.07, 0.95, 1]);
