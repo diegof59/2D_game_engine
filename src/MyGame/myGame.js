@@ -12,14 +12,17 @@ function MyGame(htmlCanvasID){
   // Shader path is relative to server root
   this.mShader = new SimpleShader("src/GLSLShaders/SimpleVS.glsl", "src/GLSLShaders/SimpleFS.glsl");
 
+  // Create renderable white and burgundy squares
+  this.mWhiteSquare = new Renderable(this.mShader);
+  this.mWhiteSquare.setColor([1,1,1,1]);
+  this.mBurgundySquare = new Renderable(this.mShader);
+  this.mBurgundySquare.setColor([0.46,0.042,0.11,1]);
+
   // Clear canvas to a  color
   globEngine.Core.clearCanvas([0.09, 0.07, 0.95, 1]);
 
-  // Activates the shader
-  this.mShader.activateShader([0,0.9,0.98, 0.8]);
-
-  // Gets webgl and draws with the currently activated geometry and the activated shader
-  let gl = globEngine.Core.getGL();
-  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  // Draw the renderable squares
+  this.mWhiteSquare.draw();
+  this.mBurgundySquare.draw();
 
 }

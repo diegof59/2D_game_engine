@@ -9,6 +9,6 @@ Developing a sample 2D game with the engine.
 ## To run project
 On root folder
   - npm install
-  - node run server.js
+  - npm start
 
 Enter localhost/3000 on web browser
