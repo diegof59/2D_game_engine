@@ -6,6 +6,7 @@ function SimpleShader(vertexShaderPath, fragmentShaderPath){
   this.mCompiledShader = null;
   this.mShaderVertexPositionAttribute = null;
   this.mPixelColor = null;
+  this.mModelTransform = null;
 
   let gl = globEngine.Core.getGL();
 
@@ -32,7 +33,10 @@ function SimpleShader(vertexShaderPath, fragmentShaderPath){
   );
   
   /* Gets reference to the shader pixel color attribute */
-  this.mPixelColor = gl.getUniformLocation(this.mCompiledShader, "uPixelColor")
+  this.mPixelColor = gl.getUniformLocation(this.mCompiledShader, "uPixelColor");
+
+  /* Gets reference to the shader model transform matrix */
+  this.mModelTransform = gl.getUniformLocation(this.mCompiledShader, "uModelTransform");
 
   /* Activates the vertex buffer loaded in engine Core
     Commented because is already activated in engine Core */
@@ -93,7 +97,7 @@ SimpleShader.prototype._loadCompileShader = function (filePath, shaderType) {
   }
 
   return compiledShader;
-}
+};
 
 /* Activates the shader for drawing */
 SimpleShader.prototype.activateShader = function (pixelColor) {
@@ -102,4 +106,11 @@ SimpleShader.prototype.activateShader = function (pixelColor) {
   gl.enableVertexAttribArray(this.mShaderVertexPositionAttribute);
   // Copies the color values from pixelColor to the shader pixelColor attribute refered
   gl.uniform4fv(this.mPixelColor, pixelColor);
-}
+};
+
+/* Loads per-object model transform to the vertex shader */
+SimpleShader.prototype.loadObjectTransform = function(modelTransform){
+  let gl = globEngine.Core.getGL();
+  // Copies the modelTransform matrix to the vertex shader modeltransform
+  gl.uniformMatrix4fv(this.mModelTransform, false, modelTransform);
+};
