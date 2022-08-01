@@ -25,9 +25,9 @@ Renderable.prototype.getTransform = function(){
 /* Activates the shader with the setted color
   Loads the transform matrix in the vertex shader for it to be applied to the vertexes
 */
-Renderable.prototype.draw = function(){
+Renderable.prototype.draw = function(vpMatrix){
   let gl = globEngine.Core.getGL();
-  this.mShader.activateShader(this.mColor);
+  this.mShader.activateShader(this.mColor,vpMatrix);
   this.mShader.loadObjectTransform(this.mTransform.getTransformMatrix());
   gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
 };

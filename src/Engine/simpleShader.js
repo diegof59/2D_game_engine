@@ -7,6 +7,7 @@ function SimpleShader(vertexShaderPath, fragmentShaderPath){
   this.mShaderVertexPositionAttribute = null;
   this.mPixelColor = null;
   this.mModelTransform = null;
+  this.mViewProjectionTransform = null;
 
   let gl = globEngine.Core.getGL();
 
@@ -37,6 +38,9 @@ function SimpleShader(vertexShaderPath, fragmentShaderPath){
 
   /* Gets reference to the shader model transform matrix */
   this.mModelTransform = gl.getUniformLocation(this.mCompiledShader, "uModelTransform");
+
+  /* Gets reference to the shader model transform matrix */
+  this.mViewProjectionTransform = gl.getUniformLocation(this.mCompiledShader, "uViewProjectionTransform");
 
   /* Activates the vertex buffer loaded in engine Core
     Commented because is already activated in engine Core */
@@ -100,9 +104,10 @@ SimpleShader.prototype._loadCompileShader = function (filePath, shaderType) {
 };
 
 /* Activates the shader for drawing */
-SimpleShader.prototype.activateShader = function (pixelColor) {
+SimpleShader.prototype.activateShader = function (pixelColor, vpMatrix) {
   let gl = globEngine.Core.getGL();
   gl.useProgram(this.mCompiledShader);
+  gl.uniformMatrix4fv(this.mViewProjectionTransform, false, vpMatrix);
   gl.enableVertexAttribArray(this.mShaderVertexPositionAttribute);
   // Copies the color values from pixelColor to the shader pixelColor attribute refered
   gl.uniform4fv(this.mPixelColor, pixelColor);
