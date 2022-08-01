@@ -12,6 +12,13 @@ function MyGame(htmlCanvasID){
   // Shader path is relative to server root
   this.mShader = new SimpleShader("src/GLSLShaders/SimpleVS.glsl", "src/GLSLShaders/SimpleFS.glsl");
 
+  // Setup the camera
+  this.mCamera = new Camera(
+    vec2.fromValues(20,60), // WC center
+    20, // WC width
+    [20,40,600,300] // Viewport [originX, originY, width, height]
+  );
+
   // Create the corner squares
   this.mTopLeftSq = new Renderable(this.mShader);
   this.mTopLeftSq.setColor([0.9,0.1,0.1,1]);
@@ -31,53 +38,8 @@ function MyGame(htmlCanvasID){
   // Clear canvas to a  color
   globEngine.Core.clearCanvas([0.09, 0.07, 0.95, 1]);
 
-  let gl = globEngine.Core.getGL();
-
-  // Set up the viewport, area on canvas to be drawn
-  gl.viewport(
-    20, // x pos of bottom left corner of vp
-    40, // y pos of bottom left corner of vp
-    600,// width of vp
-    300 // height of vp
-  );
-
-  // Set up corresponding scissor area to limit clear area
-  gl.scissor(
-    20, // x pos of bottom left corner of vp
-    40, // y pos of bottom left corner of vp
-    600,// width of vp
-    300 // height of vp
-  );
-
-  // Enable the scissor area, clear area, and then disable area
-  gl.enable(gl.SCISSOR_TEST);
-  globEngine.Core.clearCanvas([0.8, 0.8, 0.8, 1.0]);
-  gl.disable(gl.SCISSOR_TEST);
-
-  let viewMatrix = mat4.create();
-  let projectionMatrix = mat4.create();
-  
-  // Defines the center of the WorldSpace
-  mat4.lookAt(viewMatrix,
-    [20,60,10], // Camera position
-    [20,60,0],  // Look at position
-    [0,1,0]     // Orientation
-  );
-  
-  // Defines the distances of the borders from the center
-  mat4.ortho(projectionMatrix,
-    -10,  // Distance to left of WorldSpace
-    10,   // Distance to right of WorldSpace
-    -5,   // Distance to bottom of WorldSpace
-    5,    // Distance to top of WorldSpace
-    0,    // z-distance to near plane
-    1000  // z-distance to far plane
-  );
-
-  // Creates the viewprojection matrix and assigns to it the multiplication of
-  // view and projection matrices
-  let vpMatrix = mat4.create();
-  mat4.multiply(vpMatrix, projectionMatrix, viewMatrix);
+  this.mCamera.setupViewProjection();
+  let vpMatrix = this.mCamera.getVPMatrix();
 
   /* Transformations for white square */
   // Translates vertices to the left and up
