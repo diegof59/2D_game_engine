@@ -49,6 +49,10 @@ Transform.prototype.setHeight = function (height) { this.mScale[1] = height; };
 
 Transform.prototype.incHeightBy = function (delta) { this.mScale[1] += delta; };
 
+Transform.prototype.incSizeBy = function (delta) {
+  this.incWidthBy(delta);
+  this.incHeightBy(delta);
+};
 
 /* Rotation */
 
@@ -62,7 +66,7 @@ Transform.prototype.setRotationInRad = function(rotationInRad){
 Transform.prototype.getRotateInRad = function() { return this.mRotateInRad; };
 
 Transform.prototype.incRotationByRad = function (deltaRad) {
-  this.setRotate(this.mRotateInRad + deltaRad);
+  this.setRotationInRad(this.mRotateInRad + deltaRad);
 };
 
 Transform.prototype.setRotationInDegree = function (rotationInDegree) {

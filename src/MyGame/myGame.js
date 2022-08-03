@@ -1,12 +1,29 @@
 "use strict;"
 
+/* The logic of the game */
 function MyGame(htmlCanvasID){
 
   // Shader for drawing
   this.mShader = null;
+  // Camera to view the scene
+  this.mCamera = null;
 
+  // Game objects
+  this.mWhiteSquare = null;
+  this.mBurgundySquare = null;
+
+  // Init the game
+  this.init(htmlCanvasID);
+}
+
+/* Init the game state */
+MyGame.prototype.init = function(htmlCanvasID){
+  
   // Init webGL of the canvas
   globEngine.Core.initWebGL(htmlCanvasID);
+
+  // Clear canvas to a  color
+  globEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1]);
 
   // Create, load and compile the vertex and fragment shaders
   // Shader path is relative to server root
@@ -19,15 +36,8 @@ function MyGame(htmlCanvasID){
     [20,40,600,300] // Viewport [originX, originY, width, height]
   );
 
-  // Create the corner squares
-  this.mTopLeftSq = new Renderable(this.mShader);
-  this.mTopLeftSq.setColor([0.9,0.1,0.1,1]);
-  this.mTopRightSq = new Renderable(this.mShader);
-  this.mTopRightSq.setColor([0.1,0.9,0.1,1]);
-  this.mBottomLeftSq = new Renderable(this.mShader);
-  this.mBottomLeftSq.setColor([0.1,0.1,0.9,1]);
-  this.mBottomRightSq = new Renderable(this.mShader);
-  this.mBottomRightSq.setColor([0.1,0.1,0.1,1]);
+  // sets the viewport bg to dark gray
+  this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);  
 
   // Create renderable white and burgundy squares
   this.mWhiteSquare = new Renderable(this.mShader);
@@ -35,42 +45,54 @@ function MyGame(htmlCanvasID){
   this.mBurgundySquare = new Renderable(this.mShader);
   this.mBurgundySquare.setColor([0.46,0.042,0.11,1]);
 
-  // Clear canvas to a  color
-  globEngine.Core.clearCanvas([0.09, 0.07, 0.95, 1]);
-
-  this.mCamera.setupViewProjection();
-  let vpMatrix = this.mCamera.getVPMatrix();
-
-  /* Transformations for white square */
+  /* Init white square centered, 5x5 and rotate 0.2rad */
   // Translates vertices to the left and up
   this.mWhiteSquare.getTransform().setTranslation(20,60);
   // Rotates vertices by 0.2 radians
   this.mWhiteSquare.getTransform().setRotationInRad(0.2);
   // Scales by 1.2 in x and y
   this.mWhiteSquare.getTransform().setScale(5,5);
+  /* Init burgundy square centered, 2.4x2.4  */
+  this.mBurgundySquare.getTransform().setTranslation(20, 60);
+  this.mBurgundySquare.getTransform().setScale(2.4,2.4);
+
+  // Starts the game loop
+  globEngine.GameLoop.start(this);
+};
+
+/* Updates the game state */
+MyGame.prototype.update = function() {
+  
+  // Move the white square like a wheel and pulse the burgundy one
+  
+  // Moving the white square
+  let whiteSqXform = this.mWhiteSquare.getTransform();
+  let deltaX = 0.05;
+  if(whiteSqXform.getXPos() > 30){
+    whiteSqXform.setTranslation(10,60);
+  }
+  whiteSqXform.incXPosBy(deltaX);
+  whiteSqXform.incRotationByDegree(1);
+
+  // Pulse the burgundy square
+  let burgundySqXform = this.mBurgundySquare.getTransform();
+  if(burgundySqXform.getWidth() > 5){
+    burgundySqXform.setScale(2,2);
+  }
+  burgundySqXform.incSizeBy(0.05)
+};
+
+/* Draws the current game state */
+MyGame.prototype.draw = function(){
+
+  globEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1]);
+
+  this.mCamera.setupViewProjection();
+  let vpMatrix = this.mCamera.getVPMatrix();
 
   // Draw the renderable square white square, with the transformations to apply
   this.mWhiteSquare.draw(vpMatrix);
-  
-  /* Transformations for the burgundy square*/
-  this.mBurgundySquare.getTransform().setTranslation(20, 60);
-  this.mBurgundySquare.getTransform().setRotationInRad(-0.785);
-  this.mBurgundySquare.getTransform().setScale(2.4,2.4);
 
   // Draw the renderable square burgundy square, with the transformations to apply
   this.mBurgundySquare.draw(vpMatrix);
-
-  // Corner squares
-  this.mTopLeftSq.getTransform().setTranslation(10,65);
-  this.mTopLeftSq.draw(vpMatrix);
-
-  this.mTopRightSq.getTransform().setTranslation(30,65);
-  this.mTopRightSq.draw(vpMatrix);
-
-  this.mBottomLeftSq.getTransform().setTranslation(10,55);
-  this.mBottomLeftSq.draw(vpMatrix);
-
-  this.mBottomRightSq.getTransform().setTranslation(30,55);
-  this.mBottomRightSq.draw(vpMatrix);
-
-}
+};
