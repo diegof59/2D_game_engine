@@ -20,7 +20,7 @@ function MyGame(htmlCanvasID){
 MyGame.prototype.init = function(htmlCanvasID){
   
   // Init webGL of the canvas
-  globEngine.Core.initWebGL(htmlCanvasID);
+  globEngine.Core.initEngineCore(htmlCanvasID);
 
   // Clear canvas to a  color
   globEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1]);
@@ -47,13 +47,13 @@ MyGame.prototype.init = function(htmlCanvasID){
 
   /* Init white square centered, 5x5 and rotate 0.2rad */
   // Translates vertices to the left and up
-  this.mWhiteSquare.getTransform().setTranslation(20,60);
+  this.mWhiteSquare.getTransform().setPosition(20,60);
   // Rotates vertices by 0.2 radians
   this.mWhiteSquare.getTransform().setRotationInRad(0.2);
   // Scales by 1.2 in x and y
   this.mWhiteSquare.getTransform().setScale(5,5);
   /* Init burgundy square centered, 2.4x2.4  */
-  this.mBurgundySquare.getTransform().setTranslation(20, 60);
+  this.mBurgundySquare.getTransform().setPosition(20, 60);
   this.mBurgundySquare.getTransform().setScale(2.4,2.4);
 
   // Starts the game loop
@@ -68,18 +68,32 @@ MyGame.prototype.update = function() {
   // Moving the white square
   let whiteSqXform = this.mWhiteSquare.getTransform();
   let deltaX = 0.05;
+
   if(whiteSqXform.getXPos() > 30){
-    whiteSqXform.setTranslation(10,60);
+    whiteSqXform.setPosition(10,60);
   }
-  whiteSqXform.incXPosBy(deltaX);
-  whiteSqXform.incRotationByDegree(1);
+
+  if(globEngine.Input.isKeyPressed(globEngine.Input.KEYS.Right)){
+    whiteSqXform.incXPosBy(deltaX);
+  }
+
+  if(globEngine.Input.isKeyPressed(globEngine.Input.KEYS.Left)){
+    whiteSqXform.incXPosBy(-deltaX);
+  }
+
+  if(globEngine.Input.isKeyPressed(globEngine.Input.KEYS.Up)){
+    whiteSqXform.incRotationByDegree(1);
+  }
 
   // Pulse the burgundy square
   let burgundySqXform = this.mBurgundySquare.getTransform();
-  if(burgundySqXform.getWidth() > 5){
-    burgundySqXform.setScale(2,2);
+
+  if(globEngine.Input.isKeyPressed(globEngine.Input.KEYS.Down)){
+    if(burgundySqXform.getWidth() > 5){
+      burgundySqXform.setScale(2,2);
+    }
+    burgundySqXform.incSizeBy(0.05)
   }
-  burgundySqXform.incSizeBy(0.05)
 };
 
 /* Draws the current game state */

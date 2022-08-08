@@ -39,7 +39,7 @@ function SimpleShader(vertexShaderPath, fragmentShaderPath){
   /* Gets reference to the shader model transform matrix */
   this.mModelTransform = gl.getUniformLocation(this.mCompiledShader, "uModelTransform");
 
-  /* Gets reference to the shader model transform matrix */
+  /* Gets reference to the shader view projection matrix */
   this.mViewProjectionTransform = gl.getUniformLocation(this.mCompiledShader, "uViewProjectionTransform");
 
   /* Activates the vertex buffer loaded in engine Core

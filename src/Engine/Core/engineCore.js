@@ -13,7 +13,7 @@ globEngine.Core = (function(){
   const getGL = () => mGL;
 
   /* Init webGL, vertexBuffer and compile shaders */
-  const initWebGL = (htmlCanvasID) => {
+  const _initWebGL = (htmlCanvasID) => {
     let canvas = document.getElementById(htmlCanvasID); // get canvas
     // get the canvas webgl context and assign it to mGL var
     mGL = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
@@ -22,8 +22,13 @@ globEngine.Core = (function(){
       document.write("<br/> WebGL is not supported");
       return;
     }
-    // Initialize vertex buffer
+  };
+
+  const initEngineCore = (htmlCanvasID) => {
+
+    _initWebGL(htmlCanvasID);
     globEngine.VertexBuffer.init();
+    globEngine.Input.init();
   };
 
   /* Clear canvas to a given color */
@@ -35,7 +40,7 @@ globEngine.Core = (function(){
   // Public exports
   let mPublic = {
     getGL,
-    initWebGL,
+    initEngineCore,
     clearCanvas
   };
 

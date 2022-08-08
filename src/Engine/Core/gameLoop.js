@@ -44,6 +44,7 @@ globEngine.GameLoop = (function(){
         because we are a frame ahead after updating
       */
       while ((mLagTime >= MPF) && mIsLoopRunning) {
+        globEngine.Input.update();
         this.update();
         mLagTime -= MPF;
       }

@@ -2,31 +2,31 @@
 
 function Transform(){
 
-  this.mTranslation = [0,0];
+  this.mPosition = [0,0];
   this.mScale = [1,1];
   this.mRotateInRad = 0;
 }
 
 /* Translation */
 
-Transform.prototype.setTranslation = function(xPos, yPos){
-  this.mTranslation[0] = xPos;
-  this.mTranslation[1] = yPos;
+Transform.prototype.setPosition = function(xPos, yPos){
+  this.mPosition[0] = xPos;
+  this.mPosition[1] = yPos;
 };
 
-Transform.prototype.getTranslation = function() { return this.mTranslation; };
+Transform.prototype.getPosition = function() { return this.mPosition; };
 
-Transform.prototype.getXPos = function () { return this.mTranslation[0]; };
+Transform.prototype.getXPos = function () { return this.mPosition[0]; };
 
-Transform.prototype.setXPos = function (xPos) { this.mTranslation[0] = xPos; };
+Transform.prototype.setXPos = function (xPos) { this.mPosition[0] = xPos; };
 
-Transform.prototype.incXPosBy = function (delta) { this.mTranslation[0] += delta; };
+Transform.prototype.incXPosBy = function (delta) { this.mPosition[0] += delta; };
 
-Transform.prototype.getYPos = function () { return this.mTranslation[1]; };
+Transform.prototype.getYPos = function () { return this.mPosition[1]; };
 
-Transform.prototype.setYPos = function (yPos) { this.mTranslation[1] = yPos; };
+Transform.prototype.setYPos = function (yPos) { this.mPosition[1] = yPos; };
 
-Transform.prototype.incYPosBy = function (delta) { this.mTranslation[1] += delta; };
+Transform.prototype.incYPosBy = function (delta) { this.mPosition[1] += delta; };
 
 /* Scaling */
 
@@ -86,7 +86,7 @@ Transform.prototype.getTransformMatrix = function(){
   // The matrices that WebGL uses are transposed, thus the typical matrix
   // operations must be in reverse. The transform matrix is TRS (TranslateRotateScale)
 
-  mat4.translate(matrix, matrix, vec3.fromValues(this.mTranslation[0], this.mTranslation[1], 0.0));
+  mat4.translate(matrix, matrix, vec3.fromValues(this.mPosition[0], this.mPosition[1], 0.0));
   mat4.rotateZ(matrix, matrix, this.mRotateInRad);
   mat4.scale(matrix, matrix, vec3.fromValues(this.mScale[0], this.mScale[1], 1.0));
 
