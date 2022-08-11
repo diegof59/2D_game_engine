@@ -11,9 +11,9 @@ function SimpleShader(vertexShaderPath, fragmentShaderPath){
 
   let gl = globEngine.Core.getGL();
 
-  /* Load and compile vertex and fragment shader */
-  let vertexShader = this._loadCompileShader(vertexShaderPath, gl.VERTEX_SHADER);
-  let fragmentShader = this._loadCompileShader(fragmentShaderPath, gl.FRAGMENT_SHADER);
+  /* Compile vertex and fragment shader */
+  let vertexShader = this._compileShader(vertexShaderPath, gl.VERTEX_SHADER);
+  let fragmentShader = this._compileShader(fragmentShaderPath, gl.FRAGMENT_SHADER);
 
   /* Create a GL program and link the shaders to it */
   this.mCompiledShader = gl.createProgram();
@@ -67,26 +67,13 @@ SimpleShader.prototype.getShader = function () { return this.mCompiledShader };
     shaderID is the shader source code id in the HTML
     Private function begins with underscore
 */
-SimpleShader.prototype._loadCompileShader = function (filePath, shaderType) {
+SimpleShader.prototype._compileShader = function (filePath, shaderType) {
+  
   let shaderSource, compiledShader;
   let gl = globEngine.Core.getGL();
   
-  /* Get the shader source from its glsl file
-    Shader path is relative to server root
-  */
-  let xmlReq = new XMLHttpRequest();
-  xmlReq.open('GET', filePath, false);
-  try {
-    xmlReq.send();
-  } catch (error) {
-    alert(`Failed to load shader in ${filePath}`);
-    return null;
-  }
-  shaderSource = xmlReq.responseText;
-  if (shaderSource === null) {
-    alert(`Error loading shader in ${filePath}`);
-    return null;
-  }
+  /* Gets the shader source from the resource map */
+  shaderSource = globEngine.ResourceMap.retrieveAsset(filePath);
 
   /* Creates the shader based on shaderType */
   compiledShader = gl.createShader(shaderType);

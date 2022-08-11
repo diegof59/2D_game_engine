@@ -5,17 +5,20 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script type="text/javascript" defer src="src/lib/gl-matrix.js"></script>
-  <script type="text/javascript" defer src="src/Engine/Core/engineCore.js"></script>
-  <script type="text/javascript" defer src="src/Engine/Core/vertexBuffer.js"></script>
-  <script type="text/javascript" defer src="src/Engine/Core/input.js"></script>
-  <script type="text/javascript" defer src="src/Engine/Core/gameLoop.js"></script>
-  <script type="text/javascript" defer src="src/Engine/simpleShader.js"></script>
-  <script type="text/javascript" defer src="src/Engine/renderable.js"></script>
-  <script type="text/javascript" defer src="src/Engine/transform.js"></script>
-  <script type="text/javascript" defer src="src/Engine/camera.js"></script>
-  <script type="text/javascript" defer src="src/MyGame/myGame.js"></script>
+  <script type="text/javascript" defer src="src/Engine/Core/EngineCore.js"></script>
+  <script type="text/javascript" defer src="src/Engine/Core/VertexBuffer.js"></script>
+  <script type="text/javascript" defer src="src/Engine/Core/Input.js"></script>
+  <script type="text/javascript" defer src="src/Engine/Core/GameLoop.js"></script>
+  <script type="text/javascript" defer src="src/Engine/Core/Resources/DefaultResources.js"></script>
+  <script type="text/javascript" defer src="src/Engine/Core/Resources/ResourceMap.js"></script>
+  <script type="text/javascript" defer src="src/Engine/Core/Resources/TextFileLoader.js"></script>
+  <script type="text/javascript" defer src="src/Engine/SimpleShader.js"></script>
+  <script type="text/javascript" defer src="src/Engine/Renderable.js"></script>
+  <script type="text/javascript" defer src="src/Engine/Transform.js"></script>
+  <script type="text/javascript" defer src="src/Engine/Camera.js"></script>
+  <script type="text/javascript" defer src="src/MyGame/MyGame.js"></script>
 </head>
-<body onload="new MyGame('GLCanvas');">
+<body onload="globEngine.Core.initEngineCore('GLCanvas', new MyGame());">
   <canvas id="GLCanvas" width="640" height="480">
     Your browser does not support the HTML canvas.
   </canvas>

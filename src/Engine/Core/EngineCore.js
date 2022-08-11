@@ -24,11 +24,17 @@ globEngine.Core = (function(){
     }
   };
 
-  const initEngineCore = (htmlCanvasID) => {
+  const initEngineCore = (htmlCanvasID, game) => {
 
     _initWebGL(htmlCanvasID);
     globEngine.VertexBuffer.init();
     globEngine.Input.init();
+    globEngine.DefaultResources.init(() => {_startScene(game);});
+  };
+
+  const _startScene = (game) => {
+    game.init();
+    globEngine.GameLoop.start(game);
   };
 
   /* Clear canvas to a given color */

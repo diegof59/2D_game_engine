@@ -1,10 +1,10 @@
 "use strict;"
 
 /* The logic of the game */
-function MyGame(htmlCanvasID){
+function MyGame(){
 
   // Shader for drawing
-  this.mShader = null;
+  this.mConstColorShader = null;
   // Camera to view the scene
   this.mCamera = null;
 
@@ -12,22 +12,17 @@ function MyGame(htmlCanvasID){
   this.mWhiteSquare = null;
   this.mBurgundySquare = null;
 
-  // Init the game
-  this.init(htmlCanvasID);
 }
 
 /* Init the game state */
-MyGame.prototype.init = function(htmlCanvasID){
-  
-  // Init webGL of the canvas
-  globEngine.Core.initEngineCore(htmlCanvasID);
+MyGame.prototype.init = function(){
 
   // Clear canvas to a  color
   globEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1]);
 
   // Create, load and compile the vertex and fragment shaders
   // Shader path is relative to server root
-  this.mShader = new SimpleShader("src/GLSLShaders/SimpleVS.glsl", "src/GLSLShaders/SimpleFS.glsl");
+  this.mConstColorShader = globEngine.DefaultResources.getConstColorShader();
 
   // Setup the camera
   this.mCamera = new Camera(
@@ -40,9 +35,9 @@ MyGame.prototype.init = function(htmlCanvasID){
   this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);  
 
   // Create renderable white and burgundy squares
-  this.mWhiteSquare = new Renderable(this.mShader);
+  this.mWhiteSquare = new Renderable(this.mConstColorShader);
   this.mWhiteSquare.setColor([1,1,1,1]);
-  this.mBurgundySquare = new Renderable(this.mShader);
+  this.mBurgundySquare = new Renderable(this.mConstColorShader);
   this.mBurgundySquare.setColor([0.46,0.042,0.11,1]);
 
   /* Init white square centered, 5x5 and rotate 0.2rad */
@@ -71,6 +66,10 @@ MyGame.prototype.update = function() {
 
   if(whiteSqXform.getXPos() > 30){
     whiteSqXform.setPosition(10,60);
+  }
+
+  if(whiteSqXform.getXPos() < 10){
+    whiteSqXform.setPosition(30,60);
   }
 
   if(globEngine.Input.isKeyPressed(globEngine.Input.KEYS.Right)){
