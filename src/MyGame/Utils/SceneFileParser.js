@@ -33,6 +33,7 @@ SceneFileParser.prototype.parseCamera = function () {
     viewport                  // viewport (orgX, orgY, width, height)
   );
 
+  console.log(typeof bgColor[0])
   cam.setBackgroundColor(bgColor);
 
   return cam;

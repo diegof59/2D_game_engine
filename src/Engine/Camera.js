@@ -56,10 +56,12 @@ Camera.prototype.setupViewProjection = function () {
   gl.viewport(this.mViewPort[0], this.mViewPort[1], this.mViewPort[2], this.mViewPort[3]);
   // Set up corresponding scissor area to limit clear area
   gl.scissor(this.mViewPort[0], this.mViewPort[1], this.mViewPort[2], this.mViewPort[3]);
+  // Set up color of the camera area
+  gl.clearColor(this.mBgColor[0],this.mBgColor[1],this.mBgColor[2],this.mBgColor[3]);
 
   // Enable the scissor area, clear area, and then disable area
   gl.enable(gl.SCISSOR_TEST);
-  globEngine.Core.clearCanvas([0.8, 0.8, 0.8, 1.0]);
+  gl.clear(gl.COLOR_BUFFER_BIT)
   gl.disable(gl.SCISSOR_TEST);
 
   // Defines the center of the WorldSpace

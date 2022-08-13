@@ -1,10 +1,10 @@
 "use strict;"
 
 /* The logic of the game */
-function MyGame(){
+function GrayLevel(){
   
   // Scene file
-  this.sceneFile = "assets/scene.xml";
+  this.sceneFile = "assets/GrayLevel.xml";
 
   // Camera to view the scene
   this.mCamera = null;
@@ -13,21 +13,27 @@ function MyGame(){
   this.squareSet = [];
 }
 
+globEngine.Core.inheritPrototype(GrayLevel, Scene);
+
 /* Loads the scene from its file */
-MyGame.prototype.loadScene = function() {
+GrayLevel.prototype.loadScene = function() {
   globEngine.TextFileLoader.loadTextFile(
     this.sceneFile,
     globEngine.TextFileLoader.TextFileType.XMLFile
   );
 };
 
-/* Unloads the scene when game finished */
-MyGame.prototype.unloadScene = function() {
+/* Unloads the scene and starts next scene */
+GrayLevel.prototype.unloadScene = function() {
+  
   globEngine.TextFileLoader.unloadTextFile(this.sceneFile);
+  
+  let nextLevel = new BlueLevel();
+  globEngine.Core.startScene(nextLevel);
 };
 
 /* Init the game state */
-MyGame.prototype.init = function(){
+GrayLevel.prototype.init = function(){
 
   // Clear canvas to a  color
   globEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1]);
@@ -43,7 +49,7 @@ MyGame.prototype.init = function(){
 };
 
 /* Updates the game state */
-MyGame.prototype.update = function() {
+GrayLevel.prototype.update = function() {
   
   // Move the white square like a wheel and pulse the burgundy one
   
@@ -51,8 +57,9 @@ MyGame.prototype.update = function() {
   let whiteSqXform = this.squareSet[0].getTransform();
   let deltaX = 0.05;
 
+  // If white square cross right boundarie, change to blue level
   if(whiteSqXform.getXPos() > 30){
-    whiteSqXform.setPosition(10,60);
+    globEngine.GameLoop.stop()
   }
 
   if(whiteSqXform.getXPos() < 10){
@@ -83,7 +90,7 @@ MyGame.prototype.update = function() {
 };
 
 /* Draws the current game state */
-MyGame.prototype.draw = function(){
+GrayLevel.prototype.draw = function(){
 
   globEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1]);
 

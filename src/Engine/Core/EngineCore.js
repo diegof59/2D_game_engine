@@ -29,10 +29,10 @@ globEngine.Core = (function(){
     _initWebGL(htmlCanvasID);
     globEngine.VertexBuffer.init();
     globEngine.Input.init();
-    globEngine.DefaultResources.init(() => {_startScene(game);});
+    globEngine.DefaultResources.init(() => {startScene(game);});
   };
 
-  const _startScene = (game) => {
+  const startScene = (game) => {
     game.loadScene();
     globEngine.GameLoop.start(game);
   };
@@ -43,11 +43,20 @@ globEngine.Core = (function(){
     mGL.clear(mGL.COLOR_BUFFER_BIT); // clear to the color setted
   };
 
+  // Utility function to inherit from a super class
+  const inheritPrototype = function (subClass, superClass) {
+    let prototype = Object.create(superClass.prototype);
+    prototype.constructor = subClass;
+    subClass.prototype = prototype;
+  };
+
   // Public exports
   let mPublic = {
     getGL,
     initEngineCore,
-    clearCanvas
+    clearCanvas,
+    startScene,
+    inheritPrototype
   };
 
   return mPublic;

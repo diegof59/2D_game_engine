@@ -13,13 +13,15 @@
   <script type="text/javascript" defer src="src/Engine/Core/Resources/ResourceMap.js"></script>
   <script type="text/javascript" defer src="src/Engine/Core/Resources/TextFileLoader.js"></script>
   <script type="text/javascript" defer src="src/Engine/SimpleShader.js"></script>
+  <script type="text/javascript" defer src="src/Engine/Scene.js"></script>
   <script type="text/javascript" defer src="src/Engine/Renderable.js"></script>
   <script type="text/javascript" defer src="src/Engine/Transform.js"></script>
   <script type="text/javascript" defer src="src/Engine/Camera.js"></script>
-  <script type="text/javascript" defer src="src/MyGame/MyGame.js"></script>
+  <script type="text/javascript" defer src="src/MyGame/GrayLevel.js"></script>
+  <script type="text/javascript" defer src="src/MyGame/BlueLevel.js"></script>
   <script type="text/javascript" defer src="src/MyGame/Utils/SceneFileParser.js"></script>
 </head>
-<body onload="globEngine.Core.initEngineCore('GLCanvas', new MyGame());">
+<body onload="globEngine.Core.initEngineCore('GLCanvas', new GrayLevel());">
   <canvas id="GLCanvas" width="640" height="480">
     Your browser does not support the HTML canvas.
   </canvas>

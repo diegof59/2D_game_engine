@@ -19,7 +19,7 @@ globEngine.GameLoop = (function(){
   // Reference to game logic
   let mGame = null;
 
-  let _runLoop = function() {
+  const _runLoop = function() {
     if(mIsLoopRunning){
       /* Setup for next call to runLoop and update input
         Uses window.requestAnimationFrame to call runLoop
@@ -52,10 +52,14 @@ globEngine.GameLoop = (function(){
       // Draw current state of the game
       this.draw();
     }
+    else {
+      // Unloads the scene 'cause the current scene has stopped running
+      mGame.unloadScene();
+    }
   };
 
   /* Starts the runLoop cycle */
-  let _startLoop = function() {
+  const _startLoop = function() {
     
     // Starts frame timing
     mPreviousTime = Date.now();
@@ -69,7 +73,7 @@ globEngine.GameLoop = (function(){
   };
 
   /* Sets the game to initialize and the loop to star when all resources are loaded */
-  let start = function(game) {
+  const start = function(game) {
     // Binds the game
     mGame = game;
 
@@ -82,7 +86,14 @@ globEngine.GameLoop = (function(){
     )
   };
 
-  let mPublic = { start };
+  const stop = function(){
+    mIsLoopRunning = false;
+  };
+
+  let mPublic = {
+    start,
+    stop
+  };
 
   return mPublic;
 })();
