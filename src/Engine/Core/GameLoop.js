@@ -17,16 +17,16 @@ globEngine.GameLoop = (function(){
   let mIsLoopRunning = false;
 
   // Reference to game logic
-  let mMyGame = null;
+  let mGame = null;
 
   let _runLoop = function() {
     if(mIsLoopRunning){
       /* Setup for next call to runLoop and update input
         Uses window.requestAnimationFrame to call runLoop
         each frame available. Uses .call() to call runLoop
-        with mMyGame as this object binded.
+        with mGame as this object binded.
       */
-      requestAnimationFrame(function() {_runLoop.call(mMyGame);});
+      requestAnimationFrame(function() {_runLoop.call(mGame);});
       
       /* Compute time passed since last runLoop was executed
         Updates lagTime adding the elapsedTime to current lagTime
@@ -54,10 +54,9 @@ globEngine.GameLoop = (function(){
     }
   };
 
-  let start = function(myGame) {
-    // Binds the game logic reference
-    mMyGame = myGame;
-
+  /* Starts the runLoop cycle */
+  let _startLoop = function() {
+    
     // Starts frame timing
     mPreviousTime = Date.now();
     mLagTime = 0.0;
@@ -66,7 +65,21 @@ globEngine.GameLoop = (function(){
     mIsLoopRunning = true;
 
     // Starts runLoop next frame available
-    requestAnimationFrame(function() {_runLoop.call(mMyGame);})
+    requestAnimationFrame(function() {_runLoop.call(mGame);})
+  };
+
+  /* Sets the game to initialize and the loop to star when all resources are loaded */
+  let start = function(game) {
+    // Binds the game
+    mGame = game;
+
+    // Registers loadComplete callback as game init and loop start
+    globEngine.ResourceMap.setLoadCompleteCallback(
+      () => {
+        mGame.init();
+        _startLoop();
+      }
+    )
   };
 
   let mPublic = { start };

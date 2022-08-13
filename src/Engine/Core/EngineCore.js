@@ -33,7 +33,7 @@ globEngine.Core = (function(){
   };
 
   const _startScene = (game) => {
-    game.init();
+    game.loadScene();
     globEngine.GameLoop.start(game);
   };
 
