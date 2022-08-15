@@ -12,3 +12,13 @@ On root folder
   - npm start
 
 Enter localhost/3000 on web browser
+
+## Instructions on the game
+
+Use left and right keys to move the white square. Use up key to rotate the white square.
+
+If you move the white square to the right bound on the gray level,
+the game will change to the blue level, if you move the white square
+to the left bound on the blue level, it will return to the gray level.
+
+Use the down key to change size of the burgundy square.
